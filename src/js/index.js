@@ -1,3 +1,3 @@
-import '../scss/index.scss';
+import '../assets/styles/index.scss';
 
 console.log("index");
