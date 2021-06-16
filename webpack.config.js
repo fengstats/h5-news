@@ -1,132 +1,122 @@
-const { resolve } = require("path");
-const autoprefixer = require("autoprefixer");
-const HtmlWebpackPlugin = require("html-webpack-plugin")
+const path = require('path');
+const uglify = require('uglifyjs-webpack-plugin');
+const htmlWebpackPlugin = require('html-webpack-plugin');
+const autoprefixer = require('autoprefixer');
+const miniCssExtractPlugin = require('mini-css-extract-plugin');
 
-module.exports = {
-  // 模式: 开发/生产
-  mode: "development",
-  // source-map
-  devtool: "source-map",
-  // 优化: 禁止压缩
-  optimization: {
-    minimize: false
-  },
-  // 入口文件: 配置多入口
+const config = {
+  // 模式
+  mode: 'development',
+  // mode: 'production',
+
+  // 入口
   entry: {
-    index: resolve(__dirname, "./src/js/index.js"),
-    detail: resolve(__dirname, "./src/js/detail.js"),
-    collections: resolve(__dirname, "./src/js/collections.js"),
+    index: path.resolve(__dirname, './src/js/index.js'),
   },
-  // 出口文件: 输出/打包设置
+
+  // 出口
   output: {
-    // 路径
-    path: resolve(__dirname, "./dist"),
-    // 打包后的文件名
-    filename: "js/[name].js"
+    path: path.resolve(__dirname + '/dist'),
+    filename: 'js/[name].js'
   },
-  // 模块配置: loader
+
+  // 模块
   module: {
-    // 模块的匹配规则
     rules: [
+      // js文件
       {
         test: /\.js$/,
-        loader: "babel-loader",
-        // 忽略
-        exclude: resolve(__dirname, "node_modules"),
+        loader: 'babel-loader',
+        exclude: path.resolve(__dirname, 'node_modules'),
         query: {
-          "presets": ["latest"]
+          'presets': ['latest']
         }
       },
+
+      // 模板文件 .tpl
       {
-        test: /\.tp$/,
-        loader: "ejs-loader",
+        test: /\.tpl$/,
+        loader: 'ejs-loader'
       },
+
+      // 单独提取样式文件
       {
-        test: /\.css$/,
-        // 多个loader写法: 从下往上运行
+        test: /\.scss$/,
+        // 多个loader写法, 从下往上
         use: [
-          "style-loader",
-          "css-loader",
+          // 4.直接放入到html中
+          // 'style-loader',
+          // 4.提取出来为一个单独的文件
           {
-            loader: "postcee-loader",
+            loader: miniCssExtractPlugin.loader,    
             options: {
-              plugin: function () {
-                return [autoprefixer("last 5 versions")]
+              hmr: process.env.NODE_ENV == 'development'
+            }
+          },
+          // 3.处理css
+          'css-loader',
+          // 2.加上兼容性前缀
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: function () {
+                return [autoprefixer('last 5 versions')]
               }
             }
           },
-          "sass-loader"
-        ]
+          // 1.sass转换为css
+          'sass-loader'
+        ],
+        
+        
       },
+
+      // 图片文件处理
       {
-        // 图片处理: i为忽略大小写
         test: /\.(png|jpg|jpeg|gif|ico|woff|eot|svg|ttf)$/i,
-        // 小于1024处理为base64, 否则使用源数据
-        loaders: "url-loader?limit=1024&name=img/[name]-[hash:16].[ext]",
+        use: [
+          {
+            loader: 'url-loader?limit=1024&name=img/[name]-[hash:8].[ext]'
+          },
+          'image-webpack-loader'
+        ]
       }
     ]
   },
-  // 插件配置
+
+  // 插件: 压缩js、html、去除注释、空格、换行、打包后的名称
   plugins: [
-    new HtmlWebpackPlugin({
-      filename: "index.html",
-      template: resolve(__dirname, "./src/index.html"),
-      title: "老子是首页哦",
-      chunks: ["index"],
-      // 如有多个按照上面数组顺序排列
-      chunksSortMode: "manual",
-      // 排除文件
-      excludeChunks: ["node_modules"],
-      hash: true,
+    new uglify(),
+    new htmlWebpackPlugin({
       minify: {
-        // 去除注释
         removeComments: true,
-        // 去除换行
         collapseWhitespace: true
-      }
+      },
+      filename: 'index.html',
+      template: path.resolve(__dirname, './src/index.html'),
+      title: '新闻头条',
+      chunksSortMode: 'manual',
+      // manual: 按照下面数组内的排序顺序
+      chunks: ['index'],
+      excludeChunks: ['node_modules'],
+      hash: true
     }),
-    new HtmlWebpackPlugin({
-      filename: "detail.html",
-      template: resolve(__dirname, "./src/index.html"),
-      title: "老子是详情哦",
-      chunks: ["detail"],
-      // 如有多个按照上面数组顺序排列
-      chunksSortMode: "manual",
-      // 排除文件
-      excludeChunks: ["node_modules"],
-      hash: true,
-      minify: {
-        // 去除注释
-        removeComments: true,
-        // 去除换行
-        collapseWhitespace: true
-      }
-    }),
-    new HtmlWebpackPlugin({
-      filename: "collections.html",
-      template: resolve(__dirname, "./src/index.html"),
-      title: "我的新闻",
-      chunks: ["collections"],
-      // 如有多个按照上面数组顺序排列
-      chunksSortMode: "manual",
-      // 排除文件
-      excludeChunks: ["node_modules"],
-      hash: true,
-      minify: {
-        // 去除注释
-        removeComments: true,
-        // 去除换行
-        collapseWhitespace: true
-      }
+    // 单独css配置
+    new miniCssExtractPlugin({
+      filename: 'css/[name].css'
     })
   ],
-  // 开发服务器配置
+
+  // 开发服务器: 热加载
   devServer: {
     watchOptions: {
-      ignored: /node_modules/
+      // 忽略文件
+      ignored: /node_module/
     },
     open: true,
-    host: "localhost",
+    host: 'localhost',
     port: 3000
   }
-}
+};
+
+module.exports = config;
