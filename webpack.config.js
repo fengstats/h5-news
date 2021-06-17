@@ -46,7 +46,7 @@ const config = {
 
       // 单独提取样式文件
       {
-        test: /\.css$/,
+        test: /\.(css|scss)$/,
         // 多个loader写法, 从下往上
         use: [
           // 4.直接放入到html中
