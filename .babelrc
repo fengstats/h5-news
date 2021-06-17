@@ -1,0 +1,15 @@
+{
+  "plugins": [
+    [
+      // 因为我们需要使用到async、await所以需要配置一下
+      "babel-plugin-transform-runtime",
+      {
+        "absoluteRuntime": false,
+        "corejs": false,
+        "helpers": true,
+        "regenerator": true,
+        "useESModules": false
+      }
+    ]
+  ]
+}

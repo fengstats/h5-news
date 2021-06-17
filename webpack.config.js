@@ -20,6 +20,11 @@ const config = {
     filename: 'js/[name].js'
   },
 
+  // 配置可忽略扩展
+  resolve: {
+    extensions: ['.js', '.css']
+  },
+
   // 模块
   module: {
     rules: [
@@ -41,7 +46,7 @@ const config = {
 
       // 单独提取样式文件
       {
-        test: /\.scss$/,
+        test: /\.css$/,
         // 多个loader写法, 从下往上
         use: [
           // 4.直接放入到html中
