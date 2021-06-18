@@ -1,7 +1,10 @@
 import './imports';
 
 // 导入头部组件
-import Header from '../components/Header'
+import Header from '../components/Header';
+
+// 导入样式文件
+import '../assets/styles/index.scss';
 
 // console.log("index");
 
@@ -29,8 +32,8 @@ import Header from '../components/Header'
     const HeaderTpl = Header.tpl({
       url: '/',
       title: '新闻头条',
-      showLeftIcon: false,
-      showRigthIcon: true
+      showLeftIcon: true,
+      showRightIcon: true
     });
 
     oApp.innerHTML += HeaderTpl;

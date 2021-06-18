@@ -1,4 +1,37 @@
 .header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  // 水平居中效果
+  align-items: center;
   height: .44rem;
-  background-color: green;
+  width: 100%;
+  color: #fff;
+  background-color: #cf5f55;
+  z-index: 2;
+
+  .title {
+    // 填满剩余部分元素区域
+    flex: 1;
+    text-align: center;
+    font-size: .18rem;
+  }
+
+  .icon {
+    display: flex;
+		justify-content: center;
+		align-items: center;
+    width: .44rem;
+    height: .44rem;
+
+    a {
+      font-size: 0;
+    }
+
+    .iconfont {
+      color: #fff;
+      font-size: .18rem;
+    }
+  }
 }

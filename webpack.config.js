@@ -12,6 +12,8 @@ const config = {
   // 入口
   entry: {
     index: path.resolve(__dirname, './src/js/index.js'),
+    detail: path.resolve(__dirname, './src/js/detail.js'),
+    collections: path.resolve(__dirname, './src/js/collections.js'),
   },
 
   // 出口
@@ -92,6 +94,7 @@ const config = {
   // 插件: 压缩js、html、去除注释、空格、换行、打包后的名称
   plugins: [
     new uglify(),
+    // 三个入口文件配置
     new htmlWebpackPlugin({
       minify: {
         removeComments: true,
@@ -103,6 +106,34 @@ const config = {
       chunksSortMode: 'manual',
       // manual: 按照下面数组内的排序顺序
       chunks: ['index'],
+      excludeChunks: ['node_modules'],
+      hash: true
+    }),
+    new htmlWebpackPlugin({
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      },
+      filename: 'detail.html',
+      template: path.resolve(__dirname, './src/detail.html'),
+      title: '新闻详情',
+      chunksSortMode: 'manual',
+      // manual: 按照下面数组内的排序顺序
+      chunks: ['detail'],
+      excludeChunks: ['node_modules'],
+      hash: true
+    }),
+    new htmlWebpackPlugin({
+      minify: {
+        removeComments: true,
+        collapseWhitespace: true
+      },
+      filename: 'collections.html',
+      template: path.resolve(__dirname, './src/collections.html'),
+      title: '收藏',
+      chunksSortMode: 'manual',
+      // manual: 按照下面数组内的排序顺序
+      chunks: ['collections'],
       excludeChunks: ['node_modules'],
       hash: true
     }),
