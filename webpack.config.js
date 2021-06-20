@@ -102,7 +102,7 @@ const config = {
       },
       filename: 'index.html',
       template: path.resolve(__dirname, './src/index.html'),
-      title: '新闻头条',
+      title: '小陈头条',
       chunksSortMode: 'manual',
       // manual: 按照下面数组内的排序顺序
       chunks: ['index'],
@@ -116,7 +116,7 @@ const config = {
       },
       filename: 'detail.html',
       template: path.resolve(__dirname, './src/detail.html'),
-      title: '新闻详情',
+      title: '小陈详情',
       chunksSortMode: 'manual',
       // manual: 按照下面数组内的排序顺序
       chunks: ['detail'],
@@ -130,7 +130,7 @@ const config = {
       },
       filename: 'collections.html',
       template: path.resolve(__dirname, './src/collections.html'),
-      title: '收藏',
+      title: '小陈收藏',
       chunksSortMode: 'manual',
       // manual: 按照下面数组内的排序顺序
       chunks: ['collections'],
