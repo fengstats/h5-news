@@ -2,7 +2,7 @@ import itemTpl from './tpl/item.tpl';
 import wrapperTpl from './tpl/idnex.tpl';
 import './index.scss';
 
-import { tplReplace } from '../../libs/utils';
+import { tplReplace, scrollTop } from '../../libs/utils';
 
 export default {
   name: 'NavBar',
@@ -65,8 +65,9 @@ export default {
       // 4.因为我们选中的元素改变了, 所以对应的请求数据的类型也需要修改, type我们使用data-type在tpl文件中定义好了, 所以直接使用dataset下获取就行了
       const type = tarNode.dataset.type;
       setType(type);
+      scrollTop();
 
-      console.log(this._curIndex);
+      // console.log(this._curIndex);
     }
     // console.log(tarNode.dataset);
   }

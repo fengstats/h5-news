@@ -7,6 +7,14 @@ function tplReplace(template, templateObj) {
   })
 }
 
+// 滚动到顶部
+function scrollTop() {
+  // 使用定时器之后任务会滞后, 先等待页面渲染完成执行
+  setTimeout(() => {
+    window.scrollTo(0, 0);
+  }, 0)
+};
+
 // html display block 与 none
 // true: block
 // false: none
@@ -18,5 +26,6 @@ function tplHtmlBoolean(boolean) {
 // 导出方法
 export {
   tplReplace,
-  tplHtmlBoolean
+  tplHtmlBoolean,
+  scrollTop
 }
