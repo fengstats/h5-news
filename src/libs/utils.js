@@ -20,12 +20,28 @@ function scrollTop() {
 // false: none
 function tplHtmlBoolean(boolean) {
   return boolean ? 'block' : 'none';
-}
+};
+
+// 格式化请求数据
+function setPageData(data, count) {
+  // 1.获取数据长度
+  const len = data.length;
+  // 2.定义初始索引与需要返回数据的空数组
+  let index = 0;
+  let list = [];
+  // 3.根据每count条数据一个数组进行数据分割放入空数组中
+  while (index < len) {
+    list.push(data.slice(index, index += count));
+  };
+  // 3.最终将数组返回出去
+  return list;
+};
 
 
 // 导出方法
 export {
   tplReplace,
   tplHtmlBoolean,
-  scrollTop
+  scrollTop,
+  setPageData
 }

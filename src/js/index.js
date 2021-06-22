@@ -2,40 +2,33 @@ import './imports';
 import Header from '../components/Header';
 import NavBar from '../components/NavBar';
 
+// API
+import API from '../api';
+
 import { NEWS_TYPE } from '../data';
 
 // 导入初始化页面函数, 传入参数
 import init from './init';
 
-// console.log("index");
-
-// import API from '../api';
-// TODO: 测试请求是否有问题
-// async function getNewsList() {
-//   const data = await API.getNewsList('top', 10);
-//   console.log(data);
-// }
-// getNewsList();
-
 ; ((doc) => {
-  // 调用初始化函数
-  // init({
-  //   url: '/',
-  //   title: '新闻头条',
-  //   showLeftIcon: false,
-  //   showRightIcon: true
-  // }, doc);
-
-  const oApp = doc.querySelector('#app');
-
   // 请求配置对象
   const config = {
-    type: 'top'
-  }
+    type: 'top',
+    count: 10
+  };
+
+  // 各新闻数据对象存储
+  const newsData = {};
+
+  // 获取绑定节点
+  const oApp = doc.querySelector('#app');
 
   // 初始化
-  const init = () => {
+  const init = async () => {
     render();
+    // 同步
+    await setNewsList();
+    // 等待数据获取渲染成功后, 再去绑定页面事件，以防dom未获取造成的错误出现
     bindEvent();
   };
 
@@ -65,7 +58,22 @@ import init from './init';
   function setType(type) {
     config.type = type;
     console.log('设置类型成功啦我的宝~', config.type);
-  }
+  };
+
+  // 设置新闻列表的更新
+  async function setNewsList() {
+    const { type, count } = config;
+
+    // 前提: 如果该类型新闻已经请求过了并且在数据存储中存在，那么直接使用即可，否则重新请求
+
+    // 1.判断是否存在
+    if (newsData[type]) {
+      return;
+    }
+
+    newsData[type] = await API.getNewsList(type, count);
+    console.log(newsData);
+  };
 
   init();
 

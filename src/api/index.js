@@ -1,4 +1,5 @@
 import HTTP from '../libs/http';
+import { setPageData } from '../libs/utils';
 
 
 // 继承一个自己封装的HTTP类
@@ -16,7 +17,8 @@ class Service extends HTTP {
         },
         // 成功
         success(data) {
-          resolve(data);
+          const pageData = setPageData(data.result.data, count);
+          resolve(pageData);
         },
         // 失败
         error(err) {
