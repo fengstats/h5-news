@@ -2,6 +2,7 @@ import './imports';
 import Header from '../components/Header';
 import NavBar from '../components/NavBar';
 import NewsList from '../components/NewsList';
+import PageLoading from '../components/PageLoading';
 
 // API
 import API from '../api';
@@ -53,10 +54,8 @@ import init from './init';
   };
 
   // 渲染新闻列表
-  function renderNewsList() {
-    const { type, pageNum } = config;
-    const newsListTpl = NewsList.tpl(newsData[type][pageNum], pageNum);
-    // console.log(newsListTpl);
+  function renderNewsList(data, pageNum) {
+    const newsListTpl = NewsList.tpl(data[pageNum], pageNum);
     oListwrapper.innerHTML += newsListTpl;
     NewsList.imgShow();
   };
@@ -66,26 +65,35 @@ import init from './init';
     NavBar.bindClickEvent(setType);
   };
 
-  // 设置类型
+  // 切换新闻类型
   function setType(type) {
     config.type = type;
-    console.log('设置类型成功啦我的宝~', config.type);
+    config.pageNum = 0;
+    oListwrapper.innerHTML = '';
+    setNewsList();
+    // console.log('设置类型成功啦我的宝~', config.type);
   };
 
-  // 设置新闻列表的更新
+  // 更新当前类型的新闻列表
   async function setNewsList() {
-    const { type, count } = config;
-
+    const { type, count, pageNum } = config;
     // 前提: 如果该类型新闻已经请求过了并且在数据存储中存在，那么直接使用即可，否则重新请求
 
-    // 1.判断是否存在
+    // 1.存在
     if (newsData[type]) {
+      console.log('缓存池中获取');
+      renderNewsList(newsData[type], pageNum);
       return;
     }
-
+    // 2.不存在: 重新请求
+    oListwrapper.innerHTML = PageLoading.tpl();
+    console.log('网络请求获取');
     newsData[type] = await API.getNewsList(type, count);
-    renderNewsList();
-    console.log(newsData);
+    // 测试: 区分一下和缓存的区别
+    setTimeout(() => {
+      oListwrapper.innerHTML = '';
+      renderNewsList(newsData[type], pageNum);
+    }, 1000);
   };
 
   init();

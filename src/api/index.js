@@ -6,6 +6,7 @@ import { setPageData } from '../libs/utils';
 class Service extends HTTP {
   // 获取新闻列表数据: type=类型 count=条数
   getNewsList(type, count) {
+    console.log('当前请求新闻类型: ', type);
     // 返回一个promise对象让外部好接收数据处理 async await
     return new Promise((resolve, reject) => {
       this.ajax({
@@ -17,6 +18,7 @@ class Service extends HTTP {
         },
         // 成功
         success(data) {
+          // console.log(data.result.data);
           const pageData = setPageData(data.result.data, count);
           resolve(pageData);
         },

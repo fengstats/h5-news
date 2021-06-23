@@ -55,7 +55,7 @@ const config = {
           // 'style-loader',
           // 4.提取出来为一个单独的文件
           {
-            loader: miniCssExtractPlugin.loader,    
+            loader: miniCssExtractPlugin.loader,
             options: {
               hmr: process.env.NODE_ENV == 'development'
             }
@@ -74,18 +74,30 @@ const config = {
           // 1.sass转换为css
           'sass-loader'
         ],
-        
-        
+
+
       },
 
       // 图片文件处理
       {
         test: /\.(png|jpg|jpeg|gif|ico|woff|eot|svg|ttf)$/i,
+        // loaders: 'url-loader?limit=1024&name=img/[name]-[hash:16].[ext]'
         use: [
           {
-            loader: 'url-loader?limit=1024&name=img/[name]-[hash:8].[ext]'
+            loader: 'image-webpack-loader'
           },
-          'image-webpack-loader'
+          {
+            // loader: 'url-loader?limit=1024&name=img/[name]-[hash:8].[ext]',
+            loader: 'url-loader',
+            options: {
+              limit: 1024,
+              name: '[hash:8].[ext]',
+              useRelativePath: false,
+              outputPath: function (fileName) {
+                return 'images/' + fileName
+              }
+            }
+          }
         ]
       }
     ]
