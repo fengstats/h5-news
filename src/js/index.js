@@ -1,6 +1,7 @@
 import './imports';
 import Header from '../components/Header';
 import NavBar from '../components/NavBar';
+import NewsList from '../components/NewsList';
 
 // API
 import API from '../api';
@@ -14,11 +15,13 @@ import init from './init';
   // 请求配置对象
   const config = {
     type: 'top',
-    count: 10
+    count: 10,
+    pageNum: 0
   };
 
   // 各新闻数据对象存储
   const newsData = {};
+  let oListwrapper = null;
 
   // 获取绑定节点
   const oApp = doc.querySelector('#app');
@@ -44,9 +47,18 @@ import init from './init';
 
     // 顶部导航
     const navbarTpl = NavBar.tpl(NEWS_TYPE);
+    const listWrapperTpl = NewsList.wrapperTpl(82);
+    oApp.innerHTML += (headerTpl + navbarTpl + listWrapperTpl);
+    oListwrapper = oApp.querySelector('.news-list');
+  };
 
-    oApp.innerHTML += (headerTpl + navbarTpl);
-
+  // 渲染新闻列表
+  function renderNewsList() {
+    const { type, pageNum } = config;
+    const newsListTpl = NewsList.tpl(newsData[type][pageNum], pageNum);
+    // console.log(newsListTpl);
+    oListwrapper.innerHTML += newsListTpl;
+    NewsList.imgShow();
   };
 
   // 绑定监听事件
@@ -72,6 +84,7 @@ import init from './init';
     }
 
     newsData[type] = await API.getNewsList(type, count);
+    renderNewsList();
     console.log(newsData);
   };
 
