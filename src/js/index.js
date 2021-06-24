@@ -75,6 +75,8 @@ import init from './init';
   // 绑定监听事件
   function bindEvent() {
     NavBar.bindClickEvent(setType);
+    // NewsList点击绑定
+    NewsList.bindEvent(oListwrapper, setCurrentNews);
     // 窗口滚动事件绑定
     window.addEventListener('scroll', scrollToBottom.bind(null, getMoreNewsList), false);
   };
@@ -134,6 +136,16 @@ import init from './init';
       }
     }
   };
+
+
+  // 设置当前新闻保存至localstorage
+  // options: { pageNum: 哪一页, index: 哪一个 }
+  function setCurrentNews(options) {
+    const { index, pageNum } = options;
+    const currentNews = newsData[config.type][pageNum][index];
+    console.log(options, currentNews);
+    localStorage.setItem('currentNews', JSON.stringify(currentNews));
+  }
 
   init();
 

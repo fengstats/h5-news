@@ -6,7 +6,7 @@ import wrapperTpl from './tpl/wrapper.tpl';
 
 import './index.scss';
 
-import { tplReplace } from '../../libs/utils';
+import { findNewsItemNode, tplReplace } from '../../libs/utils';
 
 
 export default {
@@ -67,5 +67,25 @@ export default {
         item.style.opacity = 1;
       }
     })
+  },
+
+  // 事件绑定
+  bindEvent(oList, callback) {
+    // 事件代理，由父节点去代理字节点的事件
+    oList.addEventListener('click', this._goToDetail.bind(this, callback), false);
+  },
+
+
+  // 内部函数
+  // 跳转至详情页
+  _goToDetail(callback) {
+    const target = findNewsItemNode(arguments[1].target);
+    const options = {
+      index: target.dataset.index,
+      pageNum: target.dataset.page,
+    };
+    console.log(options);
+    callback(options);
+    window.location.href = `detail.html?path=${location.pathname}`;
   }
 }

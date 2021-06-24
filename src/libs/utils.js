@@ -51,6 +51,18 @@ function scrollToBottom(callback) {
   }
 }
 
+// 用于找到新闻列表的单个新闻节点
+function findNewsItemNode(target) {
+  while (target) {
+    if (target.className.split(' ')[0] === 'news-item') {
+      // 找到了
+      // console.log('find success');
+      return target;
+    }
+    target = target.parentNode;
+  }
+}
+
 
 // 导出方法
 export {
@@ -58,7 +70,8 @@ export {
   tplHtmlBoolean,
   scrollTop,
   setPageData,
-  scrollToBottom
+  scrollToBottom,
+  findNewsItemNode
 }
 
 // 内部方法
