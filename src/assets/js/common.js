@@ -16,4 +16,3 @@ document.documentElement.addEventListener('touchmove', function (event) {
 // 设置字体 rem 适配
 // 这里以 iphone6 为标准页面 375 x 667
 document.documentElement.style.fontSize = document.documentElement.clientWidth / 3.75 + 'px';
-

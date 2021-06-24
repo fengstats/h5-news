@@ -7,6 +7,9 @@ import PageLoading from '../components/PageLoading';
 // API
 import API from '../api';
 
+// 导入工具函数
+import { scrollToBottom } from '../libs/utils';
+
 import { NEWS_TYPE } from '../data';
 
 // 导入初始化页面函数, 传入参数
@@ -15,9 +18,14 @@ import init from './init';
 ; ((doc) => {
   // 请求配置对象
   const config = {
+    // 请求类型: 可更改
     type: 'top',
+    // 每页显示条数
     count: 10,
-    pageNum: 0
+    // 当前页码
+    pageNum: 0,
+    // 是否正在加载中
+    isLoading: false
   };
 
   // 各新闻数据对象存储
@@ -63,6 +71,8 @@ import init from './init';
   // 绑定监听事件
   function bindEvent() {
     NavBar.bindClickEvent(setType);
+    // 窗口滚动事件绑定
+    window.addEventListener('scroll', scrollToBottom.bind(null, getMoreNewsList), false);
   };
 
   // 切换新闻类型
@@ -94,6 +104,18 @@ import init from './init';
       oListwrapper.innerHTML = '';
       renderNewsList(newsData[type], pageNum);
     }, 1000);
+  };
+
+  // 获取更多列表数据
+  function getMoreNewsList() {
+    if (!config.isLoading) { // 锁是打开的
+      // 把锁锁上
+      config.isLoading = true;
+      console.log('reach bottom 1111');
+      setTimeout(() => {
+        config.isLoading = false;
+      }, 1500);
+    }
   };
 
   init();

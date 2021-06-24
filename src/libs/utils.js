@@ -37,11 +37,61 @@ function setPageData(data, count) {
   return list;
 };
 
+// 滚动到底部: 探底功能
+function scrollToBottom(callback) {
+  const scrollTop = Math.floor(_getScrollTop());
+  const windowHeight = Math.floor(_getWindowHeight());
+  // TODO: 给30px的容忍度
+  const scrollHeight = Math.floor(_getScrollHeight()) - 30;
+  // console.log('scrollTop > windowHeight > scrollHeight', scrollTop, windowHeight, scrollHeight);
+  if (scrollTop + windowHeight >= scrollHeight) {
+    // 探底了
+    // console.log('reach bottom');
+    callback();
+  }
+}
+
 
 // 导出方法
 export {
   tplReplace,
   tplHtmlBoolean,
   scrollTop,
-  setPageData
+  setPageData,
+  scrollToBottom
+}
+
+// 内部方法
+function _getScrollTop() {
+  var scrollTop = 0, bodyScrollTop = 0, documentScrollTop = 0;
+  if (document.body) {
+    bodyScrollTop = document.body.scrollTop;
+  }
+  if (document.documentElement) {
+    documentScrollTop = document.documentElement.scrollTop;
+  }
+  scrollTop = (bodyScrollTop - documentScrollTop > 0) ? bodyScrollTop : documentScrollTop;
+  return scrollTop;
+}
+
+function _getWindowHeight() {
+  var windowHeight = 0;
+  if (document.compatMode == "CSS1Compat") {
+    windowHeight = document.documentElement.clientHeight;
+  } else {
+    windowHeight = document.body.clientHeight;
+  }
+  return windowHeight;
+}
+
+function _getScrollHeight() {
+  var scrollHeight = 0, bodyScrollHeight = 0, documentScrollHeight = 0;
+  if (document.body) {
+    bodyScrollHeight = document.body.scrollHeight;
+  }
+  if (document.documentElement) {
+    documentScrollHeight = document.documentElement.scrollHeight;
+  }
+  scrollHeight = (bodyScrollHeight - documentScrollHeight > 0) ? bodyScrollHeight : documentScrollHeight;
+  return scrollHeight;
 }
