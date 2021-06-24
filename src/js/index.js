@@ -3,6 +3,7 @@ import Header from '../components/Header';
 import NavBar from '../components/NavBar';
 import NewsList from '../components/NewsList';
 import PageLoading from '../components/PageLoading';
+import MoreLoading from '../components/MoreLoading';
 
 // API
 import API from '../api';
@@ -31,6 +32,7 @@ import init from './init';
   // 各新闻数据对象存储
   const newsData = {};
   let oListwrapper = null;
+  let t = null;
 
   // 获取绑定节点
   const oApp = doc.querySelector('#app');
@@ -64,7 +66,9 @@ import init from './init';
   // 渲染新闻列表
   function renderNewsList(data, pageNum) {
     const newsListTpl = NewsList.tpl(data[pageNum], pageNum);
+    MoreLoading.remove(oListwrapper);
     oListwrapper.innerHTML += newsListTpl;
+    config.isLoading = false;
     NewsList.imgShow();
   };
 
@@ -81,7 +85,6 @@ import init from './init';
     config.pageNum = 0;
     oListwrapper.innerHTML = '';
     setNewsList();
-    // console.log('设置类型成功啦我的宝~', config.type);
   };
 
   // 更新当前类型的新闻列表
@@ -100,21 +103,35 @@ import init from './init';
     console.log('网络请求获取');
     newsData[type] = await API.getNewsList(type, count);
     // 测试: 区分一下和缓存的区别
-    setTimeout(() => {
-      oListwrapper.innerHTML = '';
-      renderNewsList(newsData[type], pageNum);
-    }, 1000);
+    // setTimeout(() => {
+    oListwrapper.innerHTML = '';
+    renderNewsList(newsData[type], pageNum);
+    // }, 1000);
   };
 
   // 获取更多列表数据
   function getMoreNewsList() {
-    if (!config.isLoading) { // 锁是打开的
-      // 把锁锁上
-      config.isLoading = true;
-      console.log('reach bottom 1111');
-      setTimeout(() => {
-        config.isLoading = false;
-      }, 1500);
+    if (newsData[config.type]) {
+      // 当前类型新闻在缓存池中
+      if (!config.isLoading) { // 锁是打开的
+        // console.log('reach bottom');
+        clearTimeout(t);
+        // 当前页码++
+        config.pageNum++;
+        const { pageNum, type } = config;
+        if (pageNum < newsData[type].length) {
+          // 1.还有数据可加载
+          // 把锁锁上
+          config.isLoading = true;
+          MoreLoading.add(oListwrapper, true);
+          t = setTimeout(() => {
+            setNewsList();
+          }, 300);
+        } else {
+          // 2.没有更多数据可加载了
+          MoreLoading.add(oListwrapper, false);
+        }
+      }
     }
   };
 

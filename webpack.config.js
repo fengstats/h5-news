@@ -81,24 +81,24 @@ const config = {
       // 图片文件处理
       {
         test: /\.(png|jpg|jpeg|gif|ico|woff|eot|svg|ttf)$/i,
-        // loaders: 'url-loader?limit=1024&name=img/[name]-[hash:16].[ext]'
-        use: [
-          {
-            loader: 'image-webpack-loader'
-          },
-          {
-            // loader: 'url-loader?limit=1024&name=img/[name]-[hash:8].[ext]',
-            loader: 'url-loader',
-            options: {
-              limit: 1024,
-              name: '[hash:8].[ext]',
-              useRelativePath: false,
-              outputPath: function (fileName) {
-                return 'images/' + fileName
-              }
-            }
-          }
-        ]
+        loaders: 'url-loader?limit=1024&name=img/[name]-[hash:16].[ext]'
+        // use: [
+        //   {
+        //     loader: 'image-webpack-loader'
+        //   },
+        //   {
+        //     loader: 'url-loader?limit=1024&name=img/[name]-[hash:8].[ext]',
+        //     // loader: 'url-loader',
+        //     // options: {
+        //     //   limit: 1024,
+        //     //   name: '[hash:8].[ext]',
+        //     //   useRelativePath: false,
+        //     //   outputPath: function (fileName) {
+        //     //     return 'img/' + fileName
+        //     //   }
+        //     // }
+        //   }
+        // ]
       }
     ]
   },

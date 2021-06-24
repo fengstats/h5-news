@@ -24,6 +24,8 @@ export default {
     let list = '';
     let tpl = null;
 
+    // console.log(data);
+
     // 组装模板文件
     data.map((item, index) => {
       const { title, author_name: author, date, thumbnail_pic_s, thumbnail_pic_s02, thumbnail_pic_s03 } = item;
