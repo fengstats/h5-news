@@ -8,6 +8,11 @@
   <title>
     <%= htmlWebpackPlugin.options.title %>
   </title>
+  <script type="text/javascript">
+    if (!localStorage.getItem('currentNews')) {
+      window.location.href = '/';
+    }
+  </script>
 </head>
 
 <body>

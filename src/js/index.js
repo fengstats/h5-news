@@ -4,6 +4,7 @@ import NavBar from '../components/NavBar';
 import NewsList from '../components/NewsList';
 import PageLoading from '../components/PageLoading';
 import MoreLoading from '../components/MoreLoading';
+import ErrorTip from '../components/ErrorTip';
 
 // API
 import API from '../api';
@@ -11,10 +12,8 @@ import API from '../api';
 // 导入工具函数
 import { scrollToBottom } from '../libs/utils';
 
+// 导入静态类型对象
 import { NEWS_TYPE } from '../data';
-
-// 导入初始化页面函数, 传入参数
-import init from './init';
 
 ; ((doc) => {
   // 请求配置对象
@@ -83,6 +82,7 @@ import init from './init';
 
   // 切换新闻类型
   function setType(type) {
+    // console.log('切换类型');
     config.type = type;
     config.pageNum = 0;
     oListwrapper.innerHTML = '';
@@ -96,17 +96,24 @@ import init from './init';
 
     // 1.存在
     if (newsData[type]) {
-      console.log('缓存池中获取');
+      // console.log('缓存池中获取');
       renderNewsList(newsData[type], pageNum);
       return;
     }
     // 2.不存在: 重新请求
     oListwrapper.innerHTML = PageLoading.tpl();
-    console.log('网络请求获取');
-    newsData[type] = await API.getNewsList(type, count);
+    // console.log('网络请求获取');
+    const res = await API.getNewsList(type, count);
+    oListwrapper.innerHTML = '';
+    if (res === 404) {
+      // console.log(404);
+      const errorTipTpl = ErrorTip.tpl('未发现网络，请您稍后再试');
+      oListwrapper.innerHTML += errorTipTpl;
+      return;
+    }
+    newsData[type] = res;
     // 测试: 区分一下和缓存的区别
     // setTimeout(() => {
-    oListwrapper.innerHTML = '';
     renderNewsList(newsData[type], pageNum);
     // }, 1000);
   };
@@ -143,7 +150,7 @@ import init from './init';
   function setCurrentNews(options) {
     const { index, pageNum } = options;
     const currentNews = newsData[config.type][pageNum][index];
-    console.log(options, currentNews);
+    // console.log(options, currentNews);
     localStorage.setItem('currentNews', JSON.stringify(currentNews));
   }
 
