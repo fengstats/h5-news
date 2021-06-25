@@ -54,10 +54,12 @@ function scrollToBottom(callback) {
 // 用于找到新闻列表的单个新闻节点
 function findNewsItemNode(target) {
   while (target) {
-    if (target.className.split(' ')[0] === 'news-item') {
-      // 找到了
-      // console.log('find success');
+    let className = target.className.split(' ')[0];
+    // console.log(className);
+    if (className === 'news-item') {
       return target;
+    } else if (className === 'news-list') {
+      return null;
     }
     target = target.parentNode;
   }

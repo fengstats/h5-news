@@ -79,7 +79,9 @@ export default {
   // 内部函数
   // 跳转至详情页
   _goToDetail(callback) {
+    // console.log(arguments[1].target);
     const target = findNewsItemNode(arguments[1].target);
+    if (!target) { return };
     const options = {
       index: target.dataset.index,
       pageNum: target.dataset.page,
