@@ -70,24 +70,22 @@ export default {
   },
 
   // 事件绑定
-  bindEvent(oList, callback) {
+  bindEvent(oList, setCurrentNews) {
     // 事件代理，由父节点去代理字节点的事件
-    oList.addEventListener('click', this._goToDetail.bind(this, callback), false);
+    oList.addEventListener('click', this._goToDetail.bind(this, setCurrentNews), false);
   },
 
 
   // 内部函数
   // 跳转至详情页
-  _goToDetail(callback) {
-    // console.log(arguments[1].target);
+  _goToDetail(setCurrentNews) {
     const target = findNewsItemNode(arguments[1].target);
     if (!target) { return };
     const options = {
       index: target.dataset.index,
       pageNum: target.dataset.page,
     };
-    console.log(options);
-    callback(options);
+    setCurrentNews(options);
     window.location.href = `detail.html?path=${location.pathname}`;
   }
 }

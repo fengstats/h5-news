@@ -1,0 +1,15 @@
+.no-data-tip {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -100%);
+
+  .icon-no-data {
+    font-size: 0.8rem;
+  }
+
+  p {
+    margin-top: 0.1rem;
+    font-size: 0.14rem;
+  }
+}

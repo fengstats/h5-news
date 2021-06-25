@@ -69,7 +69,8 @@ function findNewsItemNode(target) {
 // 用于找到url中query参数key所对应的value
 function findUrlQuery(key) {
   const reg = new RegExp(`(^|&)${key}=(.*?)(&|$)`);
-  return window.location.search.substr(1).match(reg)[2];
+  const pathNameList = window.location.search.substr(1).match(reg);
+  return pathNameList ? pathNameList[2] : '/';
 }
 
 

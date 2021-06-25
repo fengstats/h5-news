@@ -14,7 +14,7 @@ import { findUrlQuery } from '../libs/utils';
   const currentNews = JSON.parse(localStorage.getItem('currentNews'));
   let followList = JSON.parse(localStorage.getItem('followList')) || [];
 
-  console.log(currentNews);
+  // console.log(currentNews);
 
   const init = () => {
     render();
