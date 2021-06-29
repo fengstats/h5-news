@@ -36,7 +36,7 @@ import NodataTip from '../components/NodataTip';
       renderList(followList);
     } else {
       // 无数据
-      const noDataTip = NodataTip.tpl('您还有收藏giegie');
+      const noDataTip = NodataTip.tpl('您还没有收藏giegie哦~');
       oApp.innerHTML += (headerTpl + noDataTip);
     }
   };

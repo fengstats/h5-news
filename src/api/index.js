@@ -8,7 +8,7 @@ class Service extends HTTP {
   getNewsList(type, count) {
     // console.log('当前请求新闻类型: ', type);
     // 返回一个promise对象让外部好接收数据处理 async await
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve, _) => {
       this.ajax({
         url: 'Juhe/getNewsList',
         type: 'POST',
@@ -23,7 +23,7 @@ class Service extends HTTP {
           resolve(pageData);
         },
         // 失败
-        error(err) {
+        error(_) {
           // reject(err);
           resolve(404);
         }
