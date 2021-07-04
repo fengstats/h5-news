@@ -51,11 +51,13 @@ export default {
       // 重新设置导航
       // 1.先将选中节点样式选中样式去除
       navItems[this._curIndex].className = 'item';
-      
+
       // 2.把目标节点设置选中样式: 设置当前目标下标
       // 使用 [...] 的原因是因为 navItems 选出来的节点组成的数组是一个伪数组, 没有indexOf()方法, 使用 [...] 的方式可以让其变成一个真正的数组
       // this._curIndex = [...navItems].indexOf(tarNode);
       // TODO: 这种方法是看视频的, 目前并不是很理解, call在其中起到的作用是
+      // 现在理解了，简写的方式找到 Array.prototype.indexOf
+      // 并且传递 navItems 调用，参数为 tarNode
       this._curIndex = [].indexOf.call(navItems, tarNode);
 
       // 3.因为我们使用原生js, 这里是没有响应式的, 所以我们需要手动将current类样式设置到指定元素上

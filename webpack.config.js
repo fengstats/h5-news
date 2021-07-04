@@ -159,11 +159,11 @@ const config = {
   devServer: {
     watchOptions: {
       // 忽略文件
-      ignored: /node_module/
+      ignored: /node_modules/
     },
     open: true,
     host: 'localhost',
-    port: 3000
+    port: 3001
   }
 };
 
