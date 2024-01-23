@@ -1,10 +1,10 @@
-import tpl from './index.tpl';
+import tpl from './index.tpl'
 
-import { tplReplace } from '../../libs/utils';
+import { tplReplace } from '../../libs/utils'
 
 export default {
   name: 'Iframe',
   tpl(url) {
-    return tplReplace(tpl, { url });
-  }
+    return tplReplace(tpl, { url })
+  },
 }

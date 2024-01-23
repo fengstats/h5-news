@@ -1,6 +1,5 @@
-import HTTP from '../libs/http';
-import { setPageData } from '../libs/utils';
-
+import HTTP from '../libs/http'
+import { setPageData } from '../libs/utils'
 
 // 继承一个自己封装的HTTP类
 class Service extends HTTP {
@@ -14,23 +13,23 @@ class Service extends HTTP {
         type: 'POST',
         dataType: 'JSON',
         data: {
-          field: type
+          field: type,
         },
         // 成功
         success(data) {
           // console.log(data.result.data);
-          const pageData = setPageData(data.result.data, count);
-          resolve(pageData);
+          const pageData = setPageData(data.result.data, count)
+          resolve(pageData)
         },
         // 失败
         error(_) {
           // reject(err);
-          resolve(404);
-        }
+          resolve(404)
+        },
       })
     })
   }
-};
+}
 
 // 导出时实例化, 不考虑复用性, 减少外部实例化代码
-export default new Service();
+export default new Service()
